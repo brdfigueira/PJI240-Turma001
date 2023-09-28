@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'triagem',
     'crispy_forms',
     "crispy_bootstrap5",
+    'prestador',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
