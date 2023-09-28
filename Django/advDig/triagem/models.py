@@ -7,11 +7,15 @@ from crispy_forms.layout import Submit
 # Create your models here.
 class Usuario(AbstractUser):
     detalhes = models.TextField(null=True, blank=True)
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 class Demanda(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     info1 = models.TextField(null=True, blank=True)
     info2 = models.TextField(null=True, blank=True)
+    def __str__(self):
+        return f"{self.usuario}-{self.pk}"
 
 class FormUsuario(forms.ModelForm):
     class Meta:

@@ -6,13 +6,14 @@ from django import forms
 
 class Cliente(Usuario):
     Dados = models.TextField(verbose_name="Dados Adicionais")
-
+    class Meta:
+        verbose_name = 'Cliente'
 class Processo(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING, verbose_name="Cliente")
     demanda = models.ForeignKey(Demanda, on_delete=models.DO_NOTHING, verbose_name="Queixa Original")
     numero = models.CharField(max_length=255)
     tribunal = models.CharField(max_length=255)
-    ativo = models.BooleanField(default=False, choices=STATUS_M_CHOICES)
+    ativo = models.BooleanField(default=False)
 
 class Anexo(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING)
