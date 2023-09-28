@@ -30,6 +30,7 @@ def demandaNovo(request):
     user.username = user.email
     print(user.username)
     user.save()
+
     demanda = demanda.save(commit=False)
     demanda.usuario = user
     demanda.save()
