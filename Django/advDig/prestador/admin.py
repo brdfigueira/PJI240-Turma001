@@ -3,8 +3,8 @@ from .models import Cliente, Processo, Anexo, Atualizacao
 
 # Register your models here.
 class ClienteAdm(admin.ModelAdmin):
-    list_display = ('email', 'first_name', 'last_name')
-    list_display_links = ['email']
+    list_display = ['__str__']
+    list_display_links = ['__str__']
 
 class ProcessoAdm(admin.ModelAdmin):
     list_display = ('cliente', 'numero', 'ativo')

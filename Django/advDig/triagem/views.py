@@ -22,7 +22,7 @@ def demandaNovo(request):
         form1 = FormUsuario(prefix="form1")
         form2 = FormDemanda(prefix="form2")
         contexto = {'form1': form1, 'form2': form2}
-        return render(request, 'triagem/demanda.html', contexto)
+        return render(request, 'triagem/form1.html', contexto)
 
     user = FormUsuario(request.POST, prefix="form1")
     demanda = FormDemanda(request.POST, prefix="form2")
@@ -37,41 +37,35 @@ def demandaNovo(request):
 
     messages.add_message(request, messages.SUCCESS, "Postado?")
 
-    return render(request, 'triagem/demanda.html')
+    return render(request, 'triagem/form1.html')
 
 def demandaCliente(request):
-    request.session['demanda'] = True
+    request.session['next'] = "/cliente/demanda"
     return redirect("triagem")
 
+@login_required
 def triagem(request):
     usuario = auth.get_user(request)
-    if not usuario.is_authenticated:
-        return redirect('home')
+    usuario = Usuario.objects.get(pk=usuario.pk)
+    nome = usuario.first_name
+    messages.add_message(request, messages.SUCCESS, f"Olá, {nome}!")
 
-    staff = False
+    try:
+        next = request.session['next']
+    except:
+        next = None
+
+    request.session['next'] = None
 
     if usuario.is_staff:
-        staff = True;
         request.session['staff'] = True
+        if next:
+            return redirect(next)
+        return redirect("equipe")
 
-    pk = usuario.pk
-    usuario = Usuario.objects.get(pk=pk)
-    nome = usuario.first_name
-    org = ''
-    if staff:
-        org = '[Membro da Equipe]'
-
-    messages.add_message(request, messages.SUCCESS, f"Olá, {nome}! {org}")
-
-    if (org == '') and (request.session['demanda'] == True):
-        return redirect('home')
-    # Trocar home pelo registro de demandas de já clientes
-
-    # if (Perfil and Org == "IPECS"):
-    #     return redirect('IPECS')
-    # else:
-    #     return redirect('Empr')
-    return redirect('home')
+    if next:
+        return redirect(next)
+    return redirect("cliente")
 
 def login(request):
     usuario = auth.get_user(request)
@@ -80,6 +74,10 @@ def login(request):
         return redirect('triagem')
 
     if request.method != 'POST':
+        if request.GET.get('next'):
+            request.session['next'] = request.GET.get('next')
+        else:
+            request.session['next'] = None
         return render(request, 'login/index.html')
 
     usuario = request.POST.get('Usuario')
@@ -89,8 +87,11 @@ def login(request):
 
     if not user:
         messages.add_message(request, messages.ERROR, 'Usuário e/ou senha incorreto')
-        return render(request, 'login.html')
+        return render(request, 'login/index.html')
     else:
         auth.login(request, user)
         return redirect("triagem")
 
+def logout(request):
+    auth.logout(request)
+    return redirect('home')

@@ -11,9 +11,11 @@ class Usuario(AbstractUser):
         return f"{self.first_name} {self.last_name}"
 
 class Demanda(models.Model):
+    data = models.DateTimeField(auto_now=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     info1 = models.TextField(null=True, blank=True)
     info2 = models.TextField(null=True, blank=True)
+    ativa = models.BooleanField(default=True)
     def __str__(self):
         return f"{self.usuario}-{self.pk}"
 

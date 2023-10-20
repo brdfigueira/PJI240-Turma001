@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     "crispy_bootstrap5",
     'prestador',
+    'cliente',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -149,3 +150,5 @@ MESSAGE_TAGS = {
     constants.WARNING: 'alert-warning',
     constants.SUCCESS: 'alert-success',
 }
+
+LOGIN_URL = "/login"

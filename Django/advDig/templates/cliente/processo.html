@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Cliente</title>
+</head>
+<br>
+{% include '_msg.html' %}
+
+{% include 'cliente/_menuprincipal.html' with ativo=2 %}
+
+<div class="d-flex align-items-center text-white bg-dark rounded shadow-sm my-2 p-2">
+    <h4>Você precisa enviar documentos para um de seus processos</h4>
+    <a href=# class="btn btn-warning mx-2" role="button">Enviar agora</a>
+</div>
+
+{% include "cliente/_processos.html" with ativo=2 %}
+
+<div class="container-fluid">
+ <div class="card">
+  <div class="card-header">
+    <h5> Processo {{ processo.numero }}, por {{demanda.usuario}} (
+        {% if demanda.ativa == True%}
+        Ativa
+        {% else %}
+        Inativa
+        {% endif %}
+        )</h5>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Interessado:</h5>
+    <p class="card-text">{{ processo.cliente }}</p>
+    <h5 class="card-title">Tribunal:</h5>
+    <p class="card-text">{{ processo.tribunal }}</p>
+      <h5 class="card-title">Demanda:</h5>
+    <p class="card-text"><a href="{% url 'demanda' processo.demanda.id %}">{{ processo.demanda }}</a></p>
+  </div>
+  {% if processo.atualizacao_set.all %}
+    <div class="card-header">
+      <h5 class="card-title">Atualizações</h5>
+    </div>
+    <div class="card-body">
+     <table class="table table-striped-columns">
+       <tbody>
+         {% for atlz in processo.atualizacao_set.all %}
+           <tr>
+             <td><h6>Em:</h6> {{atlz.data}} </td>
+               <td><h6>Mensagem:</h6> {{atlz.detalhes}} </td>
+             <td><h6>Explicação:</h6>
+               {% if atlz.explicado %}
+                 {{ atlz.explicacao }}
+               {% else %}
+                 Uma explicação será fornecida assim que possível.
+               {% endif %}
+             </td>
+           </tr>
+         {% endfor%}
+       </tbody>
+     </table>
+  {% endif %}
+ </div>
+ </div>
+
+    <div class="row">
+        </br>
+    </div>
+</div>
+
+{% include '_navOn.html' %}
+
+{% include '_tail.html' %}
