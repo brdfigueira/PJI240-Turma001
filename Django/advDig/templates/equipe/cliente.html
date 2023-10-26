@@ -56,7 +56,7 @@
          <a href="{% url 'e_demandas_user' usuario.id 'todos' %}" role="button" class="btn btn-light">Demandas</a>
        {% endif %}
        {% if usuario.base.processo_set.all %}
-         <a href="" role="button" class="btn btn-light">Processos</a>
+         <a href="{% url 'e_processos_user' usuario.base.id 'ativos' %}" role="button" class="btn btn-light">Processos</a>
        {% endif %}
          <a href="" role="button" class="btn btn-light">Documentos</a>
      </div>

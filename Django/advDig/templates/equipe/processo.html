@@ -30,12 +30,8 @@
 <div class="container-fluid">
  <div class="card">
   <div class="card-header">
-    <h5> Processo {{ processo.numero }}, por {{demanda.usuario}} (
-        {% if demanda.ativa == True%}
-        Ativa
-        {% else %}
-        Inativa
-        {% endif %}
+    <h5> Processo {{ processo.numero }} (
+        {{ processo.ativo|yesno:"Ativo,Inativo" }}
         )</h5>
   </div>
   <div class="card-body">

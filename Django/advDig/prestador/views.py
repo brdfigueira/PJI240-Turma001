@@ -48,9 +48,16 @@ def teste(request, id):
     return HttpResponse(f" é ")
 
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
-def processos(request):
-    lista = Processo.objects.filter(Q(ativo=True))
-    contexto = {'lista': lista, 'ativar':2}
+def processos(request, status="ativos", user="t"):
+    lista = Processo.objects.all()
+    if status == "ativos":
+      lista = lista.filter(Q(ativo=True))
+      ativar = 2
+    else:
+      ativar = 1
+    if user != "t":
+      lista = lista.filter(Q(cliente__pk=user))
+    contexto = {'lista': lista, 'ativar':ativar}
 
     return render(request, "equipe/processos.html", contexto)
 
@@ -75,12 +82,12 @@ def demandasTodas(request):
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
 def demandas(request, usuario='t', status="ativas"):
     lista = Demanda.objects.all()
-    ativar=2
+    ativar=1
     if usuario != 't':
         lista = lista.filter(Q(usuario__pk=usuario))
     if status == "ativas" or not status:
         lista = Demanda.objects.filter(Q(ativa=True))
-        ativar=1
+        ativar=2
     contexto = {'lista': lista, 'ativar':ativar}
     return render(request, "equipe/demandas.html", contexto)
 

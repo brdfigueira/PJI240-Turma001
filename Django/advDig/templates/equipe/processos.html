@@ -37,6 +37,7 @@
         <table class="table table-striped table-hover table-sm">
           <thead>
             <tr>
+              <th scope="col">Cliente</th>
               <th scope="col">Número</th>
               <th scope="col">Tribunal</th>
               <th scope="col">Demanda</th>
@@ -46,10 +47,11 @@
           <tbody>
           {% for proc in lista %}
             <tr>
+              <td><a href="{% url 'e_cliente' proc.cliente.usuario.id %}">{{ proc.cliente }}</a></td>
               <td><a href="{% url 'e_processo' proc.id %}">{{ proc.numero }}</a></td>
               <td>{{ proc.tribunal }}</td>
               <td><a href="{% url 'e_demanda' proc.demanda.id %}">{{ proc.demanda }}</a></td>
-              <td>{{ proc.ativo }}</td>
+              <td>{{ proc.ativo|yesno:"Sim,Não" }}</td>
             </tr>
           {% endfor %}
           </tbody>
