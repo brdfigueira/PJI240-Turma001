@@ -35,13 +35,15 @@
 <div class="container-fluid">
  <div class="card">
   <div class="card-header">
-    <h5> Demanda #{{ demanda.id }}, por {{demanda.usuario}} (
-        {% if demanda.ativa == True%}
-        Ativa
-        {% else %}
-        Inativa
+    <h5> Demanda #{{ demanda.id }}, por <a href="{% url 'e_cliente' demanda.usuario.id %}">{{demanda.usuario}}</a> (
+        {{ demanda.ativa|yesno:"Ativa,Inativa" }}
+        )
+        {% if not demanda.acolhida and demanda.ativa %}
+            <span class="badge bg-warning">Nova</span>
+        {% elif not demanda.acolhida and not demanda.ativa %}
+            <span class="badge bg-warning">Rejeitada</span>
         {% endif %}
-        )</h5>
+    </h5>
   </div>
   <div class="card-body">
     <h5 class="card-title">Info 1:</h5>
