@@ -3,14 +3,22 @@
     {% if ativo == 1%}
         <a href="{% url 'e_demandas' %}" class="btn btn-dark active" role="button">Demandas</a>
         <a href="{% url 'e_processos' %}" class="btn btn-dark" role="button">Processos</a>
+        <a href="{% url 'e_clientes' ativos='ativos'%}" class="btn btn-dark" role="button">Clientes</a>
         <a href=# class="btn btn-dark" role="button">Documentos</a>
     {% elif ativo == 2 %}
         <a href="{% url 'e_demandas'%}" class="btn btn-dark" role="button">Demandas</a>
         <a href="{% url 'e_processos' %}" class="btn btn-dark active" role="button">Processos</a>
+        <a href="{% url 'e_clientes' ativos='ativos'%}" class="btn btn-dark" role="button">Clientes</a>
         <a href=# class="btn btn-dark" role="button">Documentos</a>
     {% elif ativo == 3 %}
         <a href="{% url 'e_demandas'%}" class="btn btn-dark" role="button">Demandas</a>
         <a href="{% url 'e_processos' %}" class="btn btn-dark" role="button">Processos</a>
+        <a href="{% url 'e_clientes' ativos='ativos'%}" class="btn btn-dark active" role="button">Clientes</a>
+        <a href=# class="btn btn-dark" role="button">Documentos</a>
+    {% elif ativo == 4 %}
+        <a href="{% url 'e_demandas' %}" class="btn btn-dark" role="button">Demandas</a>
+        <a href="{% url 'e_processos' %}" class="btn btn-dark" role="button">Processos</a>
+        <a href="{% url 'e_clientes' ativos='ativos'%}" class="btn btn-dark" role="button">Clientes</a>
         <a href=# class="btn btn-dark active" role="button">Documentos</a>
     {% endif %}
   </div>

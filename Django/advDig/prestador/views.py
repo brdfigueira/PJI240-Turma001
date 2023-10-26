@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
 from .models import FormAnexo, FormExplicacao, Processo
-from triagem.models import Usuario, Demanda, FormUsuario, FormDemanda
+from triagem.models import Usuario, Cliente, Demanda, FormUsuario, FormDemanda
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
@@ -40,9 +40,12 @@ def explicar(request):
 
     return render(request, 'triagem/form1.html')
 
-@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
-def equipe(request):
-    return redirect('processos')
+def teste(request, id):
+    objeto = Usuario.objects.get(pk=id)
+    print(objeto.email)
+    m = objeto.isNovo()
+    print(m)
+    return HttpResponse(f" é ")
 
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
 def processos(request):
@@ -64,15 +67,21 @@ def processo(request, processo_id):
     return render(request, "equipe/processo.html", contexto)
 
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
-def clientesTodos(request):
-    lista = Usuario.objects.filter(Q(is_staff=False))
-    contexto = {'lista': lista, 'ativar':2}
-    return render(request, "equipe/clientes.html", contexto)
-
-@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
 def demandasTodas(request):
     lista = Demanda.objects.all()
     contexto = {'lista': lista, 'ativar':1}
+    return render(request, "equipe/demandas.html", contexto)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def demandas(request, usuario='t', status="ativas"):
+    lista = Demanda.objects.all()
+    ativar=2
+    if usuario != 't':
+        lista = lista.filter(Q(usuario__pk=usuario))
+    if status == "ativas" or not status:
+        lista = Demanda.objects.filter(Q(ativa=True))
+        ativar=1
+    contexto = {'lista': lista, 'ativar':ativar}
     return render(request, "equipe/demandas.html", contexto)
 
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
@@ -80,3 +89,25 @@ def demanda(request, demanda_id):
     demanda = get_object_or_404(Demanda, id=demanda_id)
     contexto = {'demanda':demanda}
     return render(request, "equipe/demanda.html", contexto)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def clientes(request, ativos):
+    lista = Usuario.objects.filter(Q(is_staff=False))
+    if ativos == "ativos":
+        contexto = {'lista': lista, 'ativar': 2, 'ativos': 1}
+    elif ativos == "novos":
+        lista = lista.filter(base__isnull=True).filter(Q(demanda__ativa=True),Q(demanda__acolhida=False))
+        contexto = {'lista': lista, 'ativar': 3, 'ativos': 1}
+    else:
+        contexto = {'lista': lista, 'ativar':1, 'ativos': 0}
+    return render(request, "equipe/clientes.html", contexto)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def cliente(request, cliente_id):
+    usuario = get_object_or_404(Usuario, id=cliente_id)
+    contexto = {'usuario':usuario }
+    return render(request, "equipe/cliente.html", contexto)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def equipe(request):
+    return redirect(processos)

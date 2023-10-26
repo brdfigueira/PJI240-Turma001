@@ -1,16 +1,8 @@
 from django.db import models
-from triagem.models import Usuario, Demanda
+from triagem.models import Usuario, Cliente, Demanda
 from django import forms
 
 # Create your models here.
-
-class Cliente(models.Model):
-    usuario = models.OneToOneField(Usuario, related_name="base", verbose_name="Usuário", on_delete=models.CASCADE)
-    dados = models.TextField(verbose_name="Dados Adicionais")
-    class Meta:
-        verbose_name = 'Cliente'
-    def __str__(self):
-        return f"{self.usuario.first_name} {self.usuario.last_name}"
 
 class Processo(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING, verbose_name="Cliente")

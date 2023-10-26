@@ -1,14 +1,14 @@
     <div class="p-1 flex-grow-1">
       {% if ativo == 2 %}
-      <a href="{% url 'e_demandas' %}" class="btn btn-dark active mx-1" role="button">Ativas</a>
-      <a href="{% url 'e_demandasTodas' %}" class="btn btn-dark mx-1" role="button">Todas</a>
+      <a href="{% url 'e_demandas_status' 'ativas'%}" class="btn btn-dark active mx-1" role="button">Ativas</a>
+      <a href="{% url 'e_demandas_status' 'todas'%}" class="btn btn-dark mx-1" role="button">Todas</a>
       <a href=# role="button"></a>
       <a href=# class="btn btn-warning mx-1" role="button">Nova</a>
 
 
       {% elif ativo == 1 %}
-      <a href="{% url 'e_demandas' %}" class="btn btn-dark mx-1" role="button">Ativas</a>
-      <a href="{% url 'e_demandasTodas' %}" class="btn btn-dark active mx-1" role="button">Todas</a
+      <a href="{% url 'e_demandas_status' 'ativas' %}" class="btn btn-dark mx-1" role="button">Ativas</a>
+      <a href="{% url 'e_demandas_status' 'todas'%}" class="btn btn-dark active mx-1" role="button">Todas</a
       <a href=# role="button"></a>
       <a href=# class="btn btn-warning mx-1" role="button">Nova</a>
 
