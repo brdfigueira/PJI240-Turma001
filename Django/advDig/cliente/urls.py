@@ -8,4 +8,5 @@ urlpatterns = [
     path('cliente/processo/<int:processo_id>', views.processo, name='processo'),
     path('cliente/processos/', views.processos, name='processos'),
     path('cliente/processos/todos', views.processosTodos, name='processosTodos'),
+    path('cliente/cadastro', views.cadastro, name='cadastro'),
 ]

@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
-from .models import FormAnexo, FormExplicacao, Processo
-from triagem.models import Usuario, Cliente, Demanda, FormUsuario, FormDemanda
+from .models import FormAnexo, FormExplicacao, Processo, FormNeg
+from triagem.models import Usuario, Cliente, Demanda, FormUsuario, FormDemanda, Negativa
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
+from .funcs import acolherDemanda, atualizarCliente
 
 # Create your views here.
 
@@ -96,6 +97,53 @@ def demanda(request, demanda_id):
     demanda = get_object_or_404(Demanda, id=demanda_id)
     contexto = {'demanda':demanda}
     return render(request, "equipe/demanda.html", contexto)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def demandaAcolher(request, acao, demanda_id):
+    demanda = get_object_or_404(Demanda, id=demanda_id)
+
+    if acao == 1:
+        if not demanda.acolhida == True:
+            if not hasattr(demanda.usuario, 'base'):
+              cliente = Cliente(usuario=demanda.usuario)
+              cliente.save()
+              atualizarCliente(cliente)
+              messages.add_message(request, messages.SUCCESS,
+                                   f"{cliente} foi salvo como cliente")
+            demanda.acolhida = True
+            demanda.ativa = True
+            demanda.save()
+            acolherDemanda(demanda, acao)
+            messages.add_message(request, messages.SUCCESS,
+                                 f"{demanda} foi acolhida")
+        else:
+            messages.add_message(request, messages.WARNING,
+                                 f"{demanda} já foi acolhida")
+    contexto = {'demanda': demanda}
+
+    if acao == 0:
+        if demanda.ativa == True:
+            if request.method != 'POST':
+                form = FormNeg()
+                contexto = {'demanda': demanda, 'form': form}
+                return render(request, "equipe/rejeitar.html", contexto)
+            neg = Negativa(ref=demanda)
+            form = FormNeg(request.POST, instance=neg)
+            form.save()
+            demanda.acolhida = False
+            demanda.ativa = False
+            demanda.save()
+            messages.add_message(request, messages.WARNING,
+                                 f"{demanda} foi rejeitada")
+            acolherDemanda(demanda, acao)
+
+        else:
+            messages.add_message(request, messages.WARNING,
+                                 f"A ação não se aplica à {demanda}")
+        return render(request, "equipe/demanda.html", contexto)
+
+    return render(request, "equipe/demanda.html", contexto)
+
 
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
 def clientes(request, ativos):

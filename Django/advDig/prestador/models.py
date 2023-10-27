@@ -1,5 +1,5 @@
 from django.db import models
-from triagem.models import Usuario, Cliente, Demanda
+from triagem.models import Usuario, Cliente, Demanda, Negativa
 from django import forms
 
 # Create your models here.
@@ -49,3 +49,8 @@ class Docs(models.Model):
     class Meta:
         verbose_name = "Documentos"
         verbose_name_plural = "Documentos"
+
+class FormNeg(forms.ModelForm):
+    class Meta:
+        model = Negativa
+        fields = ['texto']

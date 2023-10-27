@@ -29,11 +29,28 @@ class Usuario(AbstractUser):
 
 class Cliente(models.Model):
     usuario = models.OneToOneField(Usuario, related_name="base", verbose_name="Usuário", on_delete=models.CASCADE)
-    dados = models.TextField(verbose_name="Dados Adicionais")
+    rg = models.IntegerField(verbose_name="RG", blank=True, null=True)
+    cpf = models.IntegerField(verbose_name="CPF", blank=True, null=True)
+    telefone = models.IntegerField(blank=True, null=True)
+    whatsapp = models.BooleanField(default=False)
+    endereco = models.TextField(verbose_name="Endereço", blank=True, null=True)
+    profissao = models.TextField(verbose_name="Profissão", blank=True, null=True)
     class Meta:
         verbose_name = 'Cliente'
     def __str__(self):
         return f"{self.usuario.first_name} {self.usuario.last_name}"
+
+class Pendencia(models.Model):
+    usuario = models.ForeignKey(Usuario, verbose_name="Usuário", on_delete=models.CASCADE)
+    descricao = models.TextField(verbose_name="Descrição")
+    url = models.URLField()
+    tipo = models.CharField(max_length=50)
+    chave = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Pendência'
+    def __str__(self):
+        return f"{self.usuario.first_name} {self.usuario.last_name}-#{self.pk}"
 
 class Demanda(models.Model):
     data = models.DateTimeField(auto_now=True)
@@ -44,6 +61,12 @@ class Demanda(models.Model):
     acolhida = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.usuario}-{self.pk}"
+
+class Negativa(models.Model):
+    ref = models.OneToOneField(Demanda, on_delete=models.CASCADE)
+    texto = models.TextField(verbose_name="Justificativa para rejeição")
+    def __str__(self):
+        return f"{self.ref}"
 
 class FormUsuario(forms.ModelForm):
     class Meta:

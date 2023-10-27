@@ -20,10 +20,7 @@
 
 {% include 'cliente/_menuprincipal.html' with ativo=1 %}
 
-<div class="d-flex align-items-center text-white bg-dark rounded shadow-sm my-2 p-2">
-    <h4>Você precisa enviar documentos para um de seus processos</h4>
-    <a href=# class="btn btn-warning mx-2" role="button">Enviar agora</a>
-</div>
+{% include 'cliente/_pendencia.html' with pendencia=0 %}
 
 <div class="d-flex my-2 align-items-center text-white bg-dark rounded shadow-sm">
     <div class="d-flex-row">

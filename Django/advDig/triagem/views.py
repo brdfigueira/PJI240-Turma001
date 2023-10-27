@@ -28,7 +28,7 @@ def demandaNovo(request):
     demanda = FormDemanda(request.POST, prefix="form2")
     user = user.save(commit=False)
     user.username = user.email
-    print(user.username)
+
     user.save()
 
     demanda = demanda.save(commit=False)

@@ -40,8 +40,8 @@
         )
         {% if not demanda.acolhida and demanda.ativa %}
             <span class="badge bg-warning">Nova</span>
-        {% elif not demanda.acolhida and not demanda.ativa %}
-            <span class="badge bg-warning">Rejeitada</span>
+        {% elif not demanda.acolhida and not demanda.ativa and demanda.negativa %}
+            <span class="badge bg-secondary">Rejeitada</span>
         {% endif %}
     </h5>
   </div>
@@ -61,6 +61,49 @@
       </div>
     {% endfor %}
   {% endif %}
+    {% if demanda.negativa %}
+    <div class="card-header">
+      <h5 class="card-title">Justificativa para rejeição</h5>
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{ demanda.negativa.texto }}</p>
+    </div>
+    {% endif %}
+
+
+
+     <div class="card-header">
+         {% if not demanda.acolhida %}
+         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmeAcolhimento">
+              Acolher
+         </button>
+        <div class="modal fade" id="confirmeAcolhimento" tabindex="-1" aria-labelledby="confirmeAcolhimentoLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirmeAcolhimentoLabel">Confirmação</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Tem certeza que deseja acolher esta demanda?</br>
+                O cliente será notificado por e-mail.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                <a href="{% url 'e_demandaAcolher' demanda.id 1 %}" role="button" class="btn btn-success">Sim</a>
+              </div>
+            </div>
+          </div>
+        </div>
+         {% endif %}
+         {% if not demanda.negativa and not demanda.acolhida and demanda.ativa %}
+         <a href="{% url 'e_demandaAcolher' demanda.id 0 %}" role="button" class="btn btn-danger">Rejeitar</a>
+         {% endif %}
+         {% if demanda.ativa and demanda.acolhida %}
+         <a href="" role="button" class="btn btn-warning">Novo Processo</a>
+         {% endif %}
+     </div>
+
  </div>
 
     <div class="row">

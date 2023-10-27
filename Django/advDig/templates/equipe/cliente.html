@@ -48,7 +48,20 @@
       <h5 class="card-title">Dados Adicionais</h5>
     </div>
       <div class="card-body">
-          <p class="card-text">{{ usuario.base.dados }}</p>
+          <h5 class="card-title">RG:</h5>
+          <p class="card-text">{{ usuario.base.rg }}</p>
+          <h5 class="card-title">CPF:</h5>
+          <p class="card-text">{{ usuario.base.cpf }}</p>
+          <h5 class="card-title">Telefone:</h5>
+          <p class="card-text">{{ usuario.base.telefone }}
+            {% if usuario.base.whatsapp %}
+              (Whatsapp)
+            {% endif %}
+          </p>
+          <h5 class="card-title">Profissão:</h5>
+          <p class="card-text">{{ usuario.base.profissao }}</p>
+          <h5 class="card-title">Endereço:</h5>
+          <p class="card-text">{{ usuario.base.endereco }}</p>
       </div>
   {% endif %}
      <div class="card-body">
