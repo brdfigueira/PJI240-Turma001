@@ -100,7 +100,7 @@
          <a href="{% url 'e_demandaAcolher' demanda.id 0 %}" role="button" class="btn btn-danger">Rejeitar</a>
          {% endif %}
          {% if demanda.ativa and demanda.acolhida %}
-         <a href="" role="button" class="btn btn-warning">Novo Processo</a>
+         <a href="{% url 'e_processoNovo' demanda.id %}" role="button" class="btn btn-warning">Novo Processo</a>
          {% endif %}
      </div>
 

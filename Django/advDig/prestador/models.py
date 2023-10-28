@@ -13,6 +13,11 @@ class Processo(models.Model):
     def __str__(self):
         return f"{self.numero} {self.tribunal}"
 
+class FormProc(forms.ModelForm):
+    class Meta:
+        model = Processo
+        fields = ['demanda', 'numero', 'tribunal']
+
 class Anexo(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING)
     processo = models.ManyToManyField(Processo)

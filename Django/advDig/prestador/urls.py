@@ -7,6 +7,7 @@ urlpatterns = [
     path('equipe/processos/<int:user>/<str:status>', views.processos, name='e_processos_user'),
     path('equipe/processos/todos', views.processosTodos, name='e_processosTodos'),
     path('equipe/processo/<int:processo_id>', views.processo, name='e_processo'),
+    path('equipe/processo/novo/<int:demanda_id>', views.processoNovo, name='e_processoNovo'),
     path('equipe/demandas/', views.demandas, name='e_demandas'),
     path('equipe/demandas/<int:usuario>/<str:status>', views.demandas, name='e_demandas_user'),
     path('equipe/demandas/<str:status>', views.demandas, name='e_demandas_status'),

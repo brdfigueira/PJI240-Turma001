@@ -2,14 +2,11 @@
       {% if ativo == 2 %}
       <a href="{% url 'cliente' %}" class="btn btn-dark active mx-1" role="button">Ativas</a>
       <a href="{% url 'demandaTodas' %}" class="btn btn-dark mx-1" role="button">Todas</a>
-      <a href=# role="button"></a>
       <a href=# class="btn btn-warning mx-1" role="button">Nova</a>
-
 
       {% elif ativo == 1 %}
       <a href="{% url 'cliente' %}" class="btn btn-dark mx-1" role="button">Ativas</a>
-      <a href="{% url 'demandaTodas' %}" class="btn btn-dark active mx-1" role="button">Todas</a
-      <a href=# role="button"></a>
+      <a href="{% url 'demandaTodas' %}" class="btn btn-dark active mx-1" role="button">Todas</a>
       <a href=# class="btn btn-warning mx-1" role="button">Nova</a>
 
       {% endif %}

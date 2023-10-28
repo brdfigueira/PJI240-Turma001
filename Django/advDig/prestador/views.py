@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
-from .models import FormAnexo, FormExplicacao, Processo, FormNeg
+from .models import FormAnexo, FormExplicacao, Processo, FormNeg, FormProc
 from triagem.models import Usuario, Cliente, Demanda, FormUsuario, FormDemanda, Negativa
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -73,6 +73,38 @@ def processo(request, processo_id):
     processo = get_object_or_404(Processo, id=processo_id)
     contexto = {'processo':processo}
     return render(request, "equipe/processo.html", contexto)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def processoNovo(request, demanda_id=0):
+    if request.method != 'POST':
+        if demanda_id == 0:
+            form = FormProc()
+            dem = 0
+        else:
+            dem = Demanda.objects.get(pk=demanda_id)
+            proc = Processo(demanda=dem)
+            form = FormProc(instance=proc)
+            dem = dem.pk
+        contexto = {'form': form, 'dem': dem}
+        return render(request, "equipe/processoform.html", contexto)
+
+    form = FormProc(request.POST)
+    proc = form.save(commit=False)
+    try:
+        proc.cliente = proc.demanda.usuario.base
+    except:
+        messages.add_message(request, messages.ERROR,
+                             f"{proc.demanda.usuario} não é cliente. Tente acolher a demanda.")
+        contexto = {'form': form, 'dem': 0}
+        return render(request, "equipe/processoform.html", contexto)
+
+    proc.ativo = True
+    proc.save()
+    chave = proc.pk
+    messages.add_message(request, messages.SUCCESS,
+                         f"{proc} criado com sucesso")
+
+    return redirect('e_processo', processo_id=chave)
 
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
 def demandasTodas(request):
