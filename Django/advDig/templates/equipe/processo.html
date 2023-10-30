@@ -42,10 +42,14 @@
       <h5 class="card-title">Demanda:</h5>
     <p class="card-text"><a href="{% url 'e_demanda' processo.demanda.id %}">{{ processo.demanda }}</a></p>
   </div>
-  {% if processo.atualizacao_set.all %}
     <div class="card-header">
-      <h5 class="card-title">Atualizações</h5>
+      <h5 class="card-title">Atualizações
+      {% if processo.ativo %}
+          <a href="{% url 'e_atualiza' processo.pk 0 %}" class="btn btn-warning" role="button">+ Nova Atualização</a>
+      {% endif %}
+      </h5>
     </div>
+  {% if processo.atualizacao_set.all %}
     <div class="card-body">
      <table class="table table-striped-columns">
        <tbody>
@@ -57,15 +61,15 @@
                {% if atlz.explicado %}
                  {{ atlz.explicacao }}
                {% else %}
-                 Uma explicação será fornecida assim que possível.
+                 <a href="{% url 'e_atualiza' processo.pk atlz.pk %}" class="btn btn-warning" role="button">Explicar</a>
                {% endif %}
              </td>
            </tr>
          {% endfor%}
        </tbody>
      </table>
-  {% endif %}
  </div>
+  {% endif %}
  </div>
 
     <div class="row">

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
-from .models import FormAnexo, FormExplicacao, Processo, FormNeg, FormProc
+from .models import FormAnexo, FormExplicacao, Processo, FormNeg, FormProc, FormAtualiz, Atualizacao
 from triagem.models import Usuario, Cliente, Demanda, FormUsuario, FormDemanda, Negativa
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -176,6 +176,38 @@ def demandaAcolher(request, acao, demanda_id):
 
     return render(request, "equipe/demanda.html", contexto)
 
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def atualizacao(request, proc_id, at_id=0):
+    proc = Processo.objects.get(id=proc_id)
+    if request.method != 'POST':
+        if at_id != 0:
+            atualiz = Atualizacao.objects.get(id=at_id)
+            form = FormAtualiz(instance=atualiz)
+        else:
+            atualiz = None
+            form = FormAtualiz()
+        contexto = {'proc': proc, 'atualiz':atualiz, 'form': form}
+        return render(request, 'equipe/atualiz.html', contexto)
+    if at_id != 0:
+        atualiz = Atualizacao.objects.get(id=at_id)
+        form = FormAtualiz(request.POST, instance=atualiz)
+    else:
+        form = FormAtualiz(request.POST)
+    atualiza = form.save(commit=False)
+    if not hasattr(atualiza, "processo"):
+         atualiza.processo = proc
+    if hasattr(atualiza, "explicacao"):
+        if atualiza.explicacao == "":
+            atualiza.explicado = False
+            atualiza.explicacao = None
+        else:
+            atualiza.explicado = True
+    else:
+        atualiza.explicado = False
+    atualiza.save()
+    messages.add_message(request, messages.SUCCESS,
+                         f"{proc} atualizado")
+    return redirect("e_processo", processo_id=proc_id)
 
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
 def clientes(request, ativos):

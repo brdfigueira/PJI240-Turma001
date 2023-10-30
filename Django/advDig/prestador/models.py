@@ -18,23 +18,37 @@ class FormProc(forms.ModelForm):
         model = Processo
         fields = ['demanda', 'numero', 'tribunal']
 
+class Solicitacao(models.Model):
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    concluida = models.BooleanField(default=False, verbose_name="concluída")
+    enviada = models.BooleanField(default=False)
+    class Meta:
+        verbose_name = "Solicitação"
+        verbose_name_plural = "Solicitações"
+
 class Anexo(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING)
-    processo = models.ManyToManyField(Processo)
-    demanda = models.ManyToManyField(Demanda)
+    solicitacao = models.ForeignKey(Solicitacao, blank=True, null=True, on_delete=models.DO_NOTHING)
+    processo = models.ManyToManyField(Processo, blank=True)
+    demanda = models.ManyToManyField(Demanda, blank=True)
     descricao = models.TextField(verbose_name="Descrição")
     anexo = models.FileField (blank=True, null=True, upload_to='anexos/%Y/%m')
 
 class Atualizacao(models.Model):
     processo = models.ForeignKey(Processo, on_delete=models.DO_NOTHING)
     detalhes = models.TextField()
-    explicacao = models.TextField(verbose_name="Explicação")
+    explicacao = models.TextField(verbose_name="Explicação", blank=True, null=True)
     explicado = models.BooleanField(default=False)
     data = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Atualização"
         verbose_name_plural = "Atualizações"
+
+class FormAtualiz(forms.ModelForm):
+    class Meta:
+        model = Atualizacao
+        fields = ['detalhes', 'explicacao']
 
 class FormAnexo(forms.ModelForm):
     class Meta:
