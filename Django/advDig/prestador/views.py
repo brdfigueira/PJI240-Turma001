@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
-from .models import FormAnexo, FormExplicacao, Processo, FormNeg, FormProc, FormAtualiz, Atualizacao
+from .models import FormAnexo, FormExplicacao, Processo, FormNeg, FormProc, FormAtualiz, FormAnexo, Atualizacao, \
+    Solicitacao, Anexo
 from triagem.models import Usuario, Cliente, Demanda, FormUsuario, FormDemanda, Negativa
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
-from .funcs import acolherDemanda, atualizarCliente
+from .funcs import acolherDemanda, atualizarCliente, solicitaNotificar, anexoValidado, anexoRejeitado
 
 # Create your views here.
 
@@ -120,14 +121,14 @@ def demandas(request, usuario='t', status="ativas"):
         lista = lista.filter(Q(usuario__pk=usuario))
     if status == "ativas" or not status:
         lista = Demanda.objects.filter(Q(ativa=True))
-        ativar=2
+        ativar = 2
     contexto = {'lista': lista, 'ativar':ativar}
     return render(request, "equipe/demandas.html", contexto)
 
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
 def demanda(request, demanda_id):
     demanda = get_object_or_404(Demanda, id=demanda_id)
-    contexto = {'demanda':demanda}
+    contexto = {'demanda': demanda}
     return render(request, "equipe/demanda.html", contexto)
 
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
@@ -230,3 +231,144 @@ def cliente(request, cliente_id):
 @user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
 def equipe(request):
     return redirect(processos)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def solicitaNova(request, tipo, id):
+    if request.method != 'POST':
+        if tipo == 'cliente':
+            cliente = Cliente.objects.get(pk=id)
+            solicita = Solicitacao(cliente=cliente)
+            solicita.save()
+        elif tipo == 'processo':
+            processo = Processo.objects.get(pk=id)
+            cliente = processo.cliente
+            solicita = Solicitacao(cliente=cliente)
+            solicita.save()
+            solicita.processo.add(processo)
+        elif tipo == 'demanda':
+            demanda = Demanda.objects.get(pk=id)
+            if not hasattr(demanda.usuario, 'base'):
+                messages.add_message(request, messages.ERROR,
+                                     f"Opção inválida: {demanda.usuario} não é cliente")
+                return redirect('equipe')
+            cliente = demanda.usuario.base
+            solicita = Solicitacao(cliente=cliente)
+            solicita.save()
+            solicita.demanda.add(demanda)
+        else:
+            messages.add_message(request, messages.ERROR,
+                                 f"Opção inválida")
+            return redirect('equipe')
+        solicita.save()
+        chave = solicita.pk
+        contexto = {'solicita':solicita}
+        return redirect('e_solicita', solicita_id=chave)
+
+    return HttpResponse('!')
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def solicita(request, solicita_id):
+    solicita = get_object_or_404(Solicitacao, pk=solicita_id)
+    contexto = {'solicita': solicita}
+    if request.method != 'POST':
+       return render(request, 'equipe/solicita.html', contexto)
+    if request.POST['documento'] == '':
+       return redirect('e_solicita', solicita_id=solicita_id)
+    anexo = Anexo(cliente = solicita.cliente, descricao=request.POST['documento'], solicitacao = solicita)
+    anexo.save()
+    if solicita.processo.all().exists():
+        for processo in solicita.processo.all():
+            anexo.processo.add(processo)
+    if solicita.demanda.all().exists():
+        for demanda in solicita.demanda.all():
+            anexo.demanda.add(demanda)
+    anexo.save()
+    return render(request, 'equipe/solicita.html', contexto)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def solicitaProc(request, solicita_id, acao):
+    solicita = get_object_or_404(Solicitacao, pk=solicita_id)
+
+    if acao == "cancelar":
+        chave = solicita.cliente.usuario.pk
+        nro = solicita.pk
+        solicita.delete()
+        messages.add_message(request, messages.SUCCESS,
+                             f"A solicitação #{nro} foi cancelada")
+        return redirect("e_cliente", cliente_id=chave)
+    if acao == "concluir":
+        solicita.concluida = True
+        solicita.save()
+        messages.add_message(request, messages.SUCCESS,
+                             f"A solicitação #{solicita.pk} foi concluida")
+    if acao == "enviar":
+        solicitaNotificar(solicita_id)
+        solicita.enviada = True
+        solicita.save()
+        messages.add_message(request, messages.SUCCESS,
+                             f"Um e-mail foi enviado para {solicita.cliente} informando sobre a solicitação #{solicita.pk}")
+    return redirect("e_solicita", solicita_id=solicita_id)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def anexo(request, anexo_id, acao):
+    anexo = get_object_or_404(Anexo, pk=anexo_id)
+    if acao == "validar":
+        anexo.validado = True
+        anexo.save()
+        if anexo.solicitacao:
+            anexoValidado(anexo_id)
+            messages.add_message(request, messages.SUCCESS,
+                                 f"Anexo #{anexo.pk} validado")
+            return redirect("e_solicita", solicita_id=anexo.solicitacao.pk)
+    elif acao == "rejeitar":
+        anexo.anexo.delete()
+        anexo.validado = False
+        if anexo.solicitacao:
+            anexoRejeitado(anexo_id)
+            messages.add_message(request, messages.WARNING,
+                                 f"Anexo #{anexo.pk} rejeitado")
+            return redirect("e_solicita", solicita_id=anexo.solicitacao.pk)
+    elif acao != 'ver':
+        messages.add_message(request, messages.ERROR,
+                             f"Ação inválida")
+    contexto = {'anexo': anexo}
+    return render(request, 'equipe/anexo.html', contexto)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def solicitas(request, ref, id):
+    if ref == "cliente":
+        referencia = get_object_or_404(Cliente, pk=id)
+        lista = referencia.solicitacao_set.all().filter(concluida=False)
+    elif ref == "processo":
+        referencia = get_object_or_404(Processo, pk=id)
+        lista = referencia.solicitacao_set.all().filter(concluida=False)
+    elif ref == "demanda":
+        referencia = get_object_or_404(Demanda, pk=id)
+        lista = referencia.solicitacao_set.all().filter(concluida=False)
+    else:
+        messages.add_message(request, messages.ERROR,
+                             f"Referência inválida para solicitações")
+        return redirect('equipe')
+    contexto = {'lista': lista, 'tipo': ref}
+    return render(request, "equipe/solicitas.html", contexto)
+
+@user_passes_test(lambda user: user.is_authenticated and (user.is_staff))
+def anexos(request, ref, id):
+    if ref == "cliente":
+        referencia = get_object_or_404(Cliente, pk=id)
+        lista = referencia.anexo_set.all()
+    elif ref == "processo":
+        referencia = get_object_or_404(Processo, pk=id)
+        lista = referencia.anexo_set.all()
+    elif ref == "demanda":
+        referencia = get_object_or_404(Demanda, pk=id)
+        lista = referencia.anexo_set.all()
+    elif ref == "solicita":
+        referencia = get_object_or_404(Solicitacao, pk=id)
+        lista = referencia.anexo_set.all()
+    else:
+        messages.add_message(request, messages.ERROR,
+                             f"Referência inválida para documentos")
+        return redirect('equipe')
+    contexto = {'lista': lista, 'tipo': ref}
+    return render(request, "equipe/anexos.html", contexto)

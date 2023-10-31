@@ -71,7 +71,15 @@
        {% if usuario.base.processo_set.all %}
          <a href="{% url 'e_processos_user' usuario.base.id 'ativos' %}" role="button" class="btn btn-light">Processos</a>
        {% endif %}
-         <a href="" role="button" class="btn btn-light">Documentos</a>
+       {% if usuario.base.anexo_set.all.exists %}
+         <a href="{% url 'e_anexos' 'cliente' usuario.base.id %}" role="button" class="btn btn-light">Documentos</a>
+       {% endif %}
+       {% if usuario.base.solicitacao_set.all.exists %}
+         <a href="{% url 'e_solicitas' 'cliente' usuario.base.id %}" role="button" class="btn btn-light">Solicitações</a>
+       {% endif %}
+       {% if usuario.base %}
+         <a href="{% url 'e_solicitaNova' 'cliente' usuario.base.id %}" role="button" class="btn btn-warning">Solicitar documentos</a>
+       {% endif %}
      </div>
  </div>
 

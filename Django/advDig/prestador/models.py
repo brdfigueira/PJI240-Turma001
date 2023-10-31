@@ -19,20 +19,30 @@ class FormProc(forms.ModelForm):
         fields = ['demanda', 'numero', 'tribunal']
 
 class Solicitacao(models.Model):
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING)
+    processo = models.ManyToManyField(Processo, blank=True)
+    demanda = models.ManyToManyField(Demanda, blank=True)
     concluida = models.BooleanField(default=False, verbose_name="concluída")
     enviada = models.BooleanField(default=False)
+    def __str__(self):
+        return f"Solicitação #{self.pk}"
     class Meta:
         verbose_name = "Solicitação"
         verbose_name_plural = "Solicitações"
 
 class Anexo(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING)
-    solicitacao = models.ForeignKey(Solicitacao, blank=True, null=True, on_delete=models.DO_NOTHING)
+    solicitacao = models.ForeignKey(Solicitacao, blank=True, null=True, on_delete=models.CASCADE, verbose_name="Solicitação")
     processo = models.ManyToManyField(Processo, blank=True)
     demanda = models.ManyToManyField(Demanda, blank=True)
     descricao = models.TextField(verbose_name="Descrição")
     anexo = models.FileField (blank=True, null=True, upload_to='anexos/%Y/%m')
+    validado = models.BooleanField(default=False)
+
+class FormAnexo(forms.ModelForm):
+    class Meta:
+        model = Anexo
+        fields = ['descricao']
 
 class Atualizacao(models.Model):
     processo = models.ForeignKey(Processo, on_delete=models.DO_NOTHING)

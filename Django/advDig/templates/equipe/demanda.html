@@ -50,6 +50,12 @@
     <p class="card-text">{{ demanda.info1 }}</p>
     <h5 class="card-title">Info 2:</h5>
     <p class="card-text">{{ demanda.info2 }}</p>
+    {% if demanda.solicitacao_set.all.exists %}
+        <a href="{% url 'e_solicitas' 'demanda' demanda.pk %}" role="button" class="btn btn-secondary btn-sm">Solicitações</a>
+    {% endif %}
+    {% if demanda.anexo_set.all.exists %}
+        <a href="{% url 'e_anexos' 'demanda' demanda.id %}" role="button" class="btn btn-secondary btn-sm">Documentos</a>
+    {% endif %}
   </div>
   {% if demanda.processo_set.all %}
     <div class="card-header">
@@ -97,10 +103,11 @@
         </div>
          {% endif %}
          {% if not demanda.negativa and not demanda.acolhida and demanda.ativa %}
-         <a href="{% url 'e_demandaAcolher' demanda.id 0 %}" role="button" class="btn btn-danger">Rejeitar</a>
+            <a href="{% url 'e_demandaAcolher' demanda.id 0 %}" role="button" class="btn btn-danger">Rejeitar</a>
          {% endif %}
          {% if demanda.ativa and demanda.acolhida %}
-         <a href="{% url 'e_processoNovo' demanda.id %}" role="button" class="btn btn-warning">Novo Processo</a>
+            <a href="{% url 'e_processoNovo' demanda.id %}" role="button" class="btn btn-warning">Novo Processo</a>
+            <a href="{% url 'e_solicitaNova' 'demanda' demanda.id %}" role="button" class="btn btn-warning">Solicitar documentos</a>
          {% endif %}
      </div>
 

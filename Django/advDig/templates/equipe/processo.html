@@ -39,10 +39,21 @@
     <p class="card-text">{{ processo.cliente }}</p>
     <h5 class="card-title">Tribunal:</h5>
     <p class="card-text">{{ processo.tribunal }}</p>
-      <h5 class="card-title">Demanda:</h5>
+    <h5 class="card-title">Demanda:</h5>
     <p class="card-text"><a href="{% url 'e_demanda' processo.demanda.id %}">{{ processo.demanda }}</a></p>
+    {% if processo.solicitacao_set.all.exists %}
+        <a href="{% url 'e_solicitas' 'processo' processo.pk %}" role="button" class="btn btn-secondary btn-sm">Solicitações</a>
+    {% endif %}
+    {% if processo.anexo_set.all.exists %}
+        <a href="{% url 'e_anexos' 'processo' processo.id %}" role="button" class="btn btn-secondary btn-sm">Documentos</a>
+    {% endif %}
   </div>
-    <div class="card-header">
+    {% if processo.ativo %}
+     <div class="card-header">
+     <a href="{% url 'e_solicitaNova' 'processo' processo.id %}" role="button" class="btn btn-warning">Solicitar documentos</a>
+     </div>
+    {% endif %}
+     <div class="card-header">
       <h5 class="card-title">Atualizações
       {% if processo.ativo %}
           <a href="{% url 'e_atualiza' processo.pk 0 %}" class="btn btn-warning" role="button">+ Nova Atualização</a>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Cliente, Processo, Anexo, Atualizacao
+from .models import Cliente, Processo, Anexo, Atualizacao, Solicitacao
 
 # Register your models here.
 class ClienteAdm(admin.ModelAdmin):
@@ -25,3 +25,4 @@ admin.site.register(Cliente, ClienteAdm)
 admin.site.register(Processo, ProcessoAdm)
 admin.site.register(Anexo, AnexoAdm)
 admin.site.register(Atualizacao, AtualizacaoAdm)
+admin.site.register(Solicitacao)
