@@ -22,12 +22,7 @@
 
 {% include 'cliente/_pendencia.html' with pendencia=request.session.pendencia %}
 
-<div class="d-flex my-2 align-items-center text-white bg-dark rounded shadow-sm">
-    <div class="d-flex-row">
-        <h3>Minhas Demandas</h3>
-    </div>
-    {% include "cliente/_demanda.html" with ativo=2 %}
-</div>
+{% include "cliente/_demanda.html" with ativo=2 %}
 
 <div class="container-fluid">
  <div class="card">
@@ -41,10 +36,8 @@
         )</h5>
   </div>
   <div class="card-body">
-    <h5 class="card-title">Info 1:</h5>
-    <p class="card-text">{{ demanda.info1 }}</p>
-    <h5 class="card-title">Info 2:</h5>
-    <p class="card-text">{{ demanda.info2 }}</p>
+    <h5 class="card-title">Detalhes:</h5>
+    <p class="card-text">{{ demanda.detalhes }}</p>
   </div>
   {% if demanda.processo_set.all %}
     <div class="card-header">

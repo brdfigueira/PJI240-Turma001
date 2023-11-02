@@ -22,7 +22,7 @@ def demandaNovo(request):
         form1 = FormUsuario(prefix="form1")
         form2 = FormDemanda(prefix="form2")
         contexto = {'form1': form1, 'form2': form2}
-        return render(request, 'triagem/form1.html', contexto)
+        return render(request, 'triagem/demanda.html', contexto)
 
     user = FormUsuario(request.POST, prefix="form1")
     demanda = FormDemanda(request.POST, prefix="form2")
@@ -35,9 +35,9 @@ def demandaNovo(request):
     demanda.usuario = user
     demanda.save()
 
-    messages.add_message(request, messages.SUCCESS, "Postado?")
+    messages.add_message(request, messages.SUCCESS, "Sua demanda foi encaminhada para a profissional. Aguarde retorno por e-mail.")
 
-    return render(request, 'triagem/form1.html')
+    return redirect('home')
 
 def demandaCliente(request):
     request.session['next'] = "/cliente/demanda"

@@ -107,6 +107,24 @@ def cadastro(request):
 
     return redirect('cliente')
 
+@user_passes_test(lambda user: user.is_authenticated and (not user.is_staff))
+def demandaNova(request):
+    pk = auth.get_user(request).pk
+    usuario = Usuario.objects.get(pk=pk)
+
+    if request.method != 'POST':
+        form = FormDemanda()
+        contexto = {'form': form}
+        return render(request, 'cliente/demandaForm.html', contexto)
+
+    instancia = Demanda(usuario=usuario)
+    form = FormDemanda(request.POST, instance=instancia)
+    demanda = form.save()
+
+    messages.add_message(request, messages.SUCCESS, "Sua nova demanda foi encaminhada para a profissional. Aguarde retorno.")
+
+    return redirect('cliente')
+
 def pendencias(request):
     user = auth.get_user(request)
     user = Usuario.objects.get(pk=user.pk)

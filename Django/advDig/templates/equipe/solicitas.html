@@ -13,19 +13,14 @@
 
     <link rel="stylesheet" href="{% static 'home/style.css'%}">
 
-    <title>AdvDig - Cliente</title>
+    <title>AdvDig - Solicitações</title>
 </head>
 <br>
 {% include '_msg.html' %}
 
-{% include 'equipe/_menuprincipal.html' with ativo=2 %}
+{% include 'equipe/_menuprincipal.html' with ativo=4 %}
 
-<div class="d-flex align-items-center text-white bg-dark rounded shadow-sm my-2 p-2">
-    <h4>Você precisa enviar documentos para um de seus processos</h4>
-    <a href=# class="btn btn-warning mx-2" role="button">Enviar agora</a>
-</div>
-
-{% include "equipe/_processos.html" with ativo=ativar %}
+{% include "equipe/_subG.html" with titulo='Solicitações' %}
 
 <div class="container-fluid">
     <div class="row">

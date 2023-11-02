@@ -120,8 +120,11 @@ def demandas(request, usuario='t', status="ativas"):
     if usuario != 't':
         lista = lista.filter(Q(usuario__pk=usuario))
     if status == "ativas" or not status:
-        lista = Demanda.objects.filter(Q(ativa=True))
+        lista = lista.filter(Q(ativa=True))
         ativar = 2
+    if status == "novas":
+        lista = lista.filter(Q(ativa=True),Q(acolhida=False))
+        ativar = 3
     contexto = {'lista': lista, 'ativar':ativar}
     return render(request, "equipe/demandas.html", contexto)
 
@@ -345,6 +348,8 @@ def solicitas(request, ref, id):
     elif ref == "demanda":
         referencia = get_object_or_404(Demanda, pk=id)
         lista = referencia.solicitacao_set.all().filter(concluida=False)
+    elif ref == "pendentes" and id == 0:
+        lista = Solicitacao.objects.all().filter(concluida=False)
     else:
         messages.add_message(request, messages.ERROR,
                              f"Referência inválida para solicitações")

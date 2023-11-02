@@ -13,26 +13,28 @@
 
     <link rel="stylesheet" href="{% static 'home/style.css'%}">
 
-    <title>AdvDig - Novo Processo</title>
+    <title>AdvDig - Cliente</title>
 </head>
 <br>
 {% include '_msg.html' %}
 
-{% include 'equipe/_menuprincipal.html' with ativo=2 %}
+{% include 'cliente/_menuprincipal.html' with ativo=2 %}
 
-{% include "equipe/_processos.html" with ativo=2 %}
+{% include 'cliente/_pendencia.html' with pendencia=0 %}
+
+{% include "cliente/_demanda.html" with ativo=2 %}
 
 <div class="container-fluid">
  <div class="card">
   <div class="card-header">
-    <h5> Novo Processo </h5>
+    <h5> Nova demanda </h5>
   </div>
   <div class="card-body">
-          <form method="POST" class="my-class" action="{% url 'e_processoNovo' dem %}" enctype="multipart/form-data">
-          {% load crispy_forms_tags %}
-          {% csrf_token %}
-          {{ form|crispy }}
-          <button class="w-25 btn btn-lg btn-primary" type="submit">Enviar</button>
+            <form method="POST" class="my-class" action="{% url 'demandaNova' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% load crispy_forms_tags %}
+            {{ form|crispy }}
+            <button class="w-25 btn btn-lg btn-primary" type="submit">Enviar</button>
   </div>
  </div>
 

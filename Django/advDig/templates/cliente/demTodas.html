@@ -19,15 +19,8 @@
 {% include '_msg.html' %}
 
 {% include 'cliente/_menuprincipal.html' with ativo=1 %}
-
 {% include 'cliente/_pendencia.html' with pendencia=0 %}
-
-<div class="d-flex my-2 align-items-center text-white bg-dark rounded shadow-sm">
-    <div class="d-flex-row">
-        <h3>Minhas Demandas</h3>
-    </div>
-    {% include "cliente/_demanda.html" with ativo=1 %}
-</div>
+{% include "cliente/_demanda.html" with ativo=1 %}
 
 <div class="container-fluid">
   <div class="row">

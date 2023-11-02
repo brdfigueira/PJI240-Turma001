@@ -7,7 +7,6 @@ from crispy_forms.layout import Submit
 
 # Create your models here.
 class Usuario(AbstractUser):
-    detalhes = models.TextField(null=True, blank=True)
     def isNovo(self):
         try:
             m = self.base
@@ -55,8 +54,7 @@ class Pendencia(models.Model):
 class Demanda(models.Model):
     data = models.DateTimeField(auto_now=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
-    info1 = models.TextField(null=True, blank=True)
-    info2 = models.TextField(null=True, blank=True)
+    detalhes = models.TextField(null=True, blank=True)
     ativa = models.BooleanField(default=True)
     acolhida = models.BooleanField(default=False)
     def __str__(self):
@@ -71,7 +69,7 @@ class Negativa(models.Model):
 class FormUsuario(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ['first_name', 'last_name', 'detalhes', 'email', 'password']
+        fields = ['first_name', 'last_name', 'email', 'password']
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
     #     self.helper = FormHelper()
@@ -84,5 +82,5 @@ class FormUsuario(forms.ModelForm):
 class FormDemanda(forms.ModelForm):
     class Meta:
         model = Demanda
-        fields = ['info1', 'info2']
+        fields = ['detalhes']
 
