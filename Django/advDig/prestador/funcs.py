@@ -13,7 +13,7 @@ def acolherDemanda(demanda, acao):
     print("Mandar um email avisando.")
 
 def solicitaNotificar(solicita_id):
-  print(f"Mandar um email com o link avisando")
+  print(f"Mandar um email com o link avisando.")
 
 def anexoValidado(anexo_id):
   anexo = Anexo.objects.get(pk = anexo_id)
