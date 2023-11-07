@@ -31,17 +31,21 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'triagem',
+    'django.contrib.humanize',
+    # Externos
     'crispy_forms',
     "crispy_bootstrap5",
+    # Meus
     'prestador',
     'cliente',
+    'triagem',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -139,7 +143,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 AUTH_USER_MODEL = 'triagem.Usuario'
-
 # Mensagens
 from django.contrib.messages import constants
 

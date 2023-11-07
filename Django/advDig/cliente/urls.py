@@ -10,4 +10,8 @@ urlpatterns = [
     path('cliente/processos/', views.processos, name='processos'),
     path('cliente/processos/todos', views.processosTodos, name='processosTodos'),
     path('cliente/cadastro', views.cadastro, name='cadastro'),
+    path('cliente/solicitas', views.solicitacoes, name='solicitas'),
+    path('cliente/solicita/<int:id>', views.solicitacao, name='solicita'),
+    path('cliente/anexos', views.anexos, name='anexos'),
+    path('cliente/anexo/<int:id>/<str:acao>', views.anexo, name='anexo'),
 ]

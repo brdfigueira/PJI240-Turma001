@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages, auth
-from django.contrib.auth.models import User
-from .models import Usuario, Demanda, FormUsuario, FormDemanda
+from .models import Usuario, Demanda, FormUsuario, FormDemanda, FormSenha
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -21,14 +20,22 @@ def demandaNovo(request):
     if request.method != 'POST':
         form1 = FormUsuario(prefix="form1")
         form2 = FormDemanda(prefix="form2")
-        contexto = {'form1': form1, 'form2': form2}
+        form3 = FormSenha(prefix="form3")
+        contexto = {'form1': form1, 'form2': form2, 'form3': form3}
         return render(request, 'triagem/demanda.html', contexto)
 
     user = FormUsuario(request.POST, prefix="form1")
     demanda = FormDemanda(request.POST, prefix="form2")
+    senha = FormSenha(request.POST, prefix="form3")
+    print(senha['senha'].value())
+    if user.is_valid():
+        print("Deu!")
+    else:
+        print("Não deu")
+
     user = user.save(commit=False)
     user.username = user.email
-
+    user.senha = senha['senha'].value()
     user.save()
 
     demanda = demanda.save(commit=False)

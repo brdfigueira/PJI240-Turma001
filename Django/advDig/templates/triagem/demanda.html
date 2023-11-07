@@ -29,6 +29,7 @@
             {% csrf_token %}
             <h2>Sobre você</h2>
             {{ form1|crispy }}
+            {{ form3|crispy }}
             <h2>Sobre a demanda</h2>
             {{ form2|crispy }}
             <button class="w-25 btn btn-lg btn-primary" type="submit">Enviar</button>

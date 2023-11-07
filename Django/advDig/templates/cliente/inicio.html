@@ -19,7 +19,7 @@
 
 {% include '_msg.html' %}
 {% include 'cliente/_menuprincipal.html' with ativo=1 %}
-{% include 'cliente/_pendencia.html' with pendencia=0 %}
+{% include 'cliente/_pendencia.html' with pendencia=request.session.pendencia %}
 {% include "cliente/_demanda.html" with ativo=2 %}
 
 <div class="container-fluid">

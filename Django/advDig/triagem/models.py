@@ -1,7 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, AbstractBaseUser
 from django import forms
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -70,6 +72,8 @@ class FormUsuario(forms.ModelForm):
     class Meta:
         model = Usuario
         fields = ['first_name', 'last_name', 'email', 'password']
+        widgets = {'password': forms.PasswordInput() }
+        help_texts = {'password': _("Use uma senha forte.")}
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
     #     self.helper = FormHelper()
@@ -79,8 +83,12 @@ class FormUsuario(forms.ModelForm):
     #     self.helper.form_action = 'submit_survey'
     #     self.helper.add_input(Submit('submit', 'Submit'))
 
+class FormSenha(forms.Form):
+    senha = forms.CharField(label="Repita a senha", widget=forms.PasswordInput())
+
 class FormDemanda(forms.ModelForm):
     class Meta:
         model = Demanda
         fields = ['detalhes']
+
 

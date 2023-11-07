@@ -40,7 +40,7 @@
           {% for solicita in lista %}
             <tr>
               <td><a href="{% url 'e_solicita' solicita.id %}">#{{ solicita.id }}</a></td>
-              <td><a href="{% url 'e_cliente' solicita.cliente.id %}">{{ solicita.cliente }}</a></td>
+              <td><a href="{% url 'e_cliente' solicita.cliente.usuario.id %}">{{ solicita.cliente }}</a></td>
               <td><a href="{% url 'e_solicita' solicita.id %}">
                   {% if solicita.concluida == True %}
                     Concluída
