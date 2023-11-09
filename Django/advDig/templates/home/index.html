@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="pt-Br" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Home</title>
+</head>
+<body>
+{% include '_msg.html' %}
+    <div id="container">
+        <div id="profile">
+            <img src="{% static 'home/Assets/Avatar.png' %}" alt="Foto do perfil da Advogada Janaina Larisca">
+            <p>@janainalarisca.adv</p>
+        </div>
+        <div class="container text-center">
+            <a class="btn btn-outline-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" aria-label="Tenho uma demanda">
+                Tenho uma demanda
+            </a>
+        </br>
+        </br>
+        </div>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <a class="btn btn-outline-secondary" href="{% url 'demanda' %}" role="button" aria-label="Não sou cliente">Não sou cliente</a>
+                </br>
+                <a class="btn btn-outline-secondary" href="{% url 'demandaNova' %}" role="button" aria-label="Já sou cliente">Já sou cliente</a>
+            </div>
+        </div>
+    </div>
+
+{% include '_navOff.html' %}
+
+{% include '_tail.html' %}

@@ -1,0 +1,23 @@
+<div class="d-flex my-2 align-items-center text-white bg-dark rounded shadow-sm">
+    <div class="d-flex-row">
+        <h3>Demandas</h3>
+    </div>
+    <div class="p-1 flex-grow-1">
+      {% if ativo == 2 %}
+      <a href="{% url 'e_demandas_status' 'ativas' %}" class="btn btn-dark active mx-1" role="button" aria-label="Demandas Ativas">Ativas</a>
+      <a href="{% url 'e_demandas_status' 'todas' %}" class="btn btn-dark mx-1" role="button" aria-label="Todas demandas">Todas</a>
+      <a href="{% url 'e_demandas_status' 'novas' %}" class="btn btn-dark mx-1" role="button" aria-label="Novos demandas">Demandas</a>
+
+      {% elif ativo == 1 %}
+      <a href="{% url 'e_demandas_status' 'ativas' %}" class="btn btn-dark mx-1" role="button" aria-label="Demandas Ativas">Ativas</a>
+      <a href="{% url 'e_demandas_status' 'todas'%}" class="btn btn-dark active mx-1" role="button" aria-label="Todas demandas">Todas</a>
+      <a href="{% url 'e_demandas_status' 'novas' %}" class="btn btn-dark mx-1" role="button" aria-label="Novos demandas">Demandas</a>
+
+      {% elif ativo == 3 %}
+      <a href="{% url 'e_demandas_status' 'ativas' %}" class="btn btn-dark mx-1" role="button" aria-label="Demandas Ativas">Ativas</a>
+      <a href="{% url 'e_demandas_status' 'todas'%}" class="btn btn-dark mx-1" role="button" aria-label="Todas demandas">Todas</a>
+      <a href="{% url 'e_demandas_status' 'novas' %}" class="btn btn-dark active mx-1" role="button" aria-label="Novos demandas">Demandas</a>
+
+      {% endif %}
+    </div>
+</div>

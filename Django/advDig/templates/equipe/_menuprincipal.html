@@ -1,0 +1,25 @@
+<div class="d-flex align-items-center p-2 my-2 text-white bg-dark rounded shadow-sm">
+  <div class="p-1 flex-grow-1">
+    {% if ativo == 1%}
+        <a href="{% url 'e_demandas' %}" class="btn btn-dark active" role="button" aria-label="Link para demandas">Demandas</a>
+        <a href="{% url 'e_processos' %}" class="btn btn-dark" role="button" aria-label="Link para processos">Processos</a>
+        <a href="{% url 'e_clientes' ativos='ativos'%}" class="btn btn-dark" role="button" aria-label="Link para clientes ativos">Clientes</a>
+        <a href="{% url 'e_solicitas' 'pendentes' 0 %}" class="btn btn-dark" role="button" aria-label="Link para solicitações pendentes">Solicitações</a>
+    {% elif ativo == 2 %}
+        <a href="{% url 'e_demandas'%}" class="btn btn-dark" role="button" aria-label="Link para demandas">Demandas</a>
+        <a href="{% url 'e_processos' %}" class="btn btn-dark active" role="button" aria-label="Link para processos">Processos</a>
+        <a href="{% url 'e_clientes' ativos='ativos'%}" class="btn btn-dark" role="button" aria-label="Link para clientes ativos">Clientes</a>
+        <a href="{% url 'e_solicitas' 'pendentes' 0 %}" class="btn btn-dark" role="button" aria-label="Link para solicitações pendentes">Solicitações</a>
+    {% elif ativo == 3 %}
+        <a href="{% url 'e_demandas'%}" class="btn btn-dark" role="button" aria-label="Link para demandas">Demandas</a>
+        <a href="{% url 'e_processos' %}" class="btn btn-dark" role="button" aria-label="Link para processos">Processos</a>
+        <a href="{% url 'e_clientes' ativos='ativos'%}" class="btn btn-dark active" role="button" aria-label="Link para clientes ativos">Clientes</a>
+        <a href="{% url 'e_solicitas' 'pendentes' 0 %}" class="btn btn-dark" role="button" aria-label="Link para solicitações pendentes">Solicitações</a>
+    {% elif ativo == 4 %}
+        <a href="{% url 'e_demandas' %}" class="btn btn-dark" role="button" aria-label="Link para demandas">Demandas</a>
+        <a href="{% url 'e_processos' %}" class="btn btn-dark" role="button" aria-label="Link para processos">Processos</a>
+        <a href="{% url 'e_clientes' ativos='ativos'%}" class="btn btn-dark" role="button" aria-label="Link para clientes ativos">Clientes</a>
+        <a href="{% url 'e_solicitas' 'pendentes' 0 %}" class="btn btn-dark active" role="button" aria-label="Link para solicitações pendentes">Solicitações</a>
+    {% endif %}
+  </div>
+</div>

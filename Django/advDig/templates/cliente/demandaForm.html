@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html lang="pt-Br" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Cliente</title>
+</head>
+<br>
+{% include '_msg.html' %}
+
+{% include 'cliente/_menuprincipal.html' with ativo=2 %}
+
+{% include 'cliente/_pendencia.html' with pendencia=request.session.pendencia %}
+
+{% include "cliente/_demanda.html" with ativo=2 %}
+
+<div class="container-fluid">
+ <div class="card">
+  <div class="card-header">
+    <h5> Nova demanda </h5>
+  </div>
+  <div class="card-body">
+            <form method="POST" class="my-class" action="{% url 'demandaNova' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% load crispy_forms_tags %}
+            {{ form|crispy }}
+            <button class="w-25 btn btn-lg btn-primary" type="submit" aria-label="Enviar formulário">Enviar</button>
+  </div>
+ </div>
+
+    <div class="row">
+        </br>
+    </div>
+</div>
+
+{% include '_navOn.html' %}
+
+{% include '_tail.html' %}

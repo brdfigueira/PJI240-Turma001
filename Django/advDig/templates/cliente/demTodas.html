@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="pt-Br" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Cliente</title>
+</head>
+<br>
+{% include '_msg.html' %}
+
+{% include 'cliente/_menuprincipal.html' with ativo=1 %}
+{% include 'cliente/_pendencia.html' with pendencia=request.session.pendencia %}
+{% include "cliente/_demanda.html" with ativo=1 %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+    </div>
+    <div class="col-8">
+
+                <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Protocolo</th>
+              <th scope="col">Data</th>
+              <th scope="col">Processos</th>
+              <th scope="col">Ativo</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for dem in lista %}
+            <tr>
+              <td><a href="{% url 'demanda' dem.id %}" aria-label="Link para demanda">{{ dem.id }}</a></td>
+              <td><a href="{% url 'demanda' dem.id %}" aria-label="Link para data da demanda">{{ dem.data }}</a></td>
+              <td>
+                  {% for proc in dem.processo_set.all %}
+                    <h6><a href="{% url 'processo' proc.id %}" aria-label="Link para processo">{{ proc.numero }}</a></h6>
+                  {% endfor %}
+              </td>
+              <td>{{ dem.ativa }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="col">
+    </div>
+  </div>
+    <div class="row">
+        </br>
+    </div>
+</div>
+
+{% include '_navOn.html' %}
+
+{% include '_tail.html' %}

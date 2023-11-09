@@ -1,0 +1,16 @@
+{% if pendencia %}
+
+<div class="alert alert-warning" role="alert">
+  Por gentileza, conclua seu cadastro com informações pessoais. <a href='{% url "cadastro" %}' class="btn btn-warning mx-2" role="button" aria-label="Clique aqui para concluir seu cadastro">Clique aqui</a>
+</div>
+
+{% endif %}
+
+{% if request.session.solicita != 0 %}
+{% load humanize %}
+
+<div class="alert alert-warning" role="alert">
+  Você tem {{ request.session.solicita }} solicita{{ request.session.solicita|pluralize:"ção,ções" }} de documentos pendente{{ request.session.solicita|pluralize }}. <a href='{% url "solicitas" %}' class="btn btn-warning mx-2" role="button" aria-label="Clique aqui para ver suas solicitações pendentes">Clique aqui</a>
+</div>
+
+{% endif %}

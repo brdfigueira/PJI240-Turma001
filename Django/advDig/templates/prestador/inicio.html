@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="pt-Br" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Equipe</title>
+</head>
+<body>
+{% include '_msg.html' %}
+
+<div class="d-flex align-items-center p-2 my-3 text-white bg-dark rounded shadow-sm">
+  <div class="p-1 flex-grow-1">
+      <a href=# class="btn btn-dark active" role="button" aria-label="Link para clientes">Clientes</a>
+      <a href=# class="btn btn-dark" role="button" aria-label="Link para demandas">Demandas</a>
+            <a href=# class="btn btn-dark" role="button" aria-label="Link para processos">Processos</a>
+            <a href=# class="btn btn-dark" role="button" aria-label="Link para documentos">Documentos</a>
+  </div></div>
+</br>
+<div class="d-flex align-items-center p-2 my-3 text-white bg-dark rounded shadow-sm">
+  <div class="p-1 flex-grow-1">
+      <a href=# class="btn btn-dark" role="button" aria-label="Link para processos ativos">Com processo ativo</a>
+      <a href=# class="btn btn-dark active" role="button" aria-label="Link para todos os processos">Todos</a>
+  <div class="p-2">
+    <a href=# class="btn btn-warning" role="button" aria-label="Link para criar novo processo">Novo</a>
+  </div>
+</div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+    </div>
+    <div class="col-8">
+
+                <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Nome</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Ativo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="#" aria-label="Link para André Luiz Nardim">André Luiz Nardim</a></td>
+              <td>cliente</td>
+              <td>sim</td>
+            </tr>
+            <tr>
+              <td><a href="#" aria-label="Link para Beatriz Da Costa Rodrigues">Beatriz Da Costa Rodrigues</a></td>
+              <td>cliente</td>
+              <td>não</td>
+            </tr>
+            <tr>
+              <td><a href="#" aria-label="Link para Beatriz Gilli Rodrigues">Beatriz Gilli Rodrigues</a></td>
+              <td>cliente</td>
+              <td>sim</td>
+            </tr>
+            <tr>
+              <td><a href="#" aria-label="Link para Breno Ruiz Dias Figueira">Breno Ruiz Dias Figueira</a></td>
+              <td>demandante</td>
+              <td>sim</td>
+            </tr>
+            <tr>
+              <td><a href="#" aria-label="Link para Dhara Ribeiro Arinos Vasco">Dhara Ribeiro Arinos Vasco</a></td>
+              <td>cliente</td>
+              <td>sim</td>
+            </tr>
+            <tr>
+              <td><a href="#" aria-label="Link para Felipe Santos Montero">Felipe Santos Montero</a></td>
+              <td>demandante</td>
+              <td>não</td>
+            </tr>
+            <tr>
+              <td><a href="#" aria-label="Link para Wilian Tiago Pavini">Wilian Tiago Pavini</a></td>
+              <td>cliente</td>
+              <td>sim</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="col">
+    </div>
+  </div>
+    <div class="row">
+        </br>
+    </div>
+</div>
+
+{% include '_navOn.html' %}
+
+{% include '_tail.html' %}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html lang="pt-Br" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Home</title>
+</head>
+<body>
+{% include '_msg.html' %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+    </div>
+    <div class="col-8">
+        <strong>Data:</strong> 02/10/2023</br>
+        <strong>Mensagem:</strong> Para análise</br>
+
+        {% load crispy_forms_tags %}
+
+        <form method="POST" class="my-class" action="{% url 'anexo' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form1|crispy }}
+            <button class="w-25 btn btn-lg btn-primary" type="submit" aria-label="Enviar formulário">Enviar</button>
+            </br>
+            </br>
+            </br>
+        </form>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+    <div class="row">
+        </br>
+    </div>
+</div>
+
+{% include '_navOff.html' %}
+
+{% include '_tail.html' %}

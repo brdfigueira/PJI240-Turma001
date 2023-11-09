@@ -1,0 +1,21 @@
+<div class="d-flex align-items-center p-2 my-2 text-white bg-dark rounded shadow-sm">
+  <div class="p-1 flex-grow-1">
+    {% if ativo == 1%}
+        <a href="{% url 'cliente' %}" class="btn btn-dark active" role="button" aria-label="Demandas">Demandas</a>
+        <a href="{% url 'processos' %}" class="btn btn-dark" role="button" aria-label="Processos">Processos</a>
+        <a href=# class="btn btn-dark" role="button" aria-label="Documentos">Documentos</a>
+    {% elif ativo == 2 %}
+        <a href="{% url 'cliente'%}" class="btn btn-dark" role="button"aria-label="Demandas">Demandas</a>
+        <a href="{% url 'processos' %}" class="btn btn-dark active" role="button" aria-label="Processos">Processos</a>
+        <a href=# class="btn btn-dark" role="button" aria-label="Documentos">Documentos</a>
+    {% elif ativo == 3 %}
+        <a href="{% url 'cliente'%}" class="btn btn-dark" role="button"aria-label="Demandas">Demandas</a>
+        <a href="{% url 'processos' %}" class="btn btn-dark" role="button" aria-label="Processos">Processos</a>
+        <a href=# class="btn btn-dark active" role="button" aria-label="Documentos">Documentos</a>
+    {% elif ativo == 0 %}
+        <a href="{% url 'cliente'%}" class="btn btn-dark" role="button"aria-label="Demandas">Demandas</a>
+        <a href="{% url 'processos' %}" class="btn btn-dark" role="button" aria-label="Processos">Processos</a>
+        <a href=# class="btn btn-dark" role="button" aria-label="Documentos">Documentos</a>
+    {% endif %}
+  </div>
+</div>
