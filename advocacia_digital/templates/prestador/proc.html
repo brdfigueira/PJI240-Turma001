@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Home</title>
+</head>
+<body>
+{% include '_msg.html' %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+    </div>
+    <div class="col-8">
+        <strong>Cliente:</strong> <a>André Luiz Nardim</a></br>
+        <strong>Demanda:</strong> <a>André Nardim - 2</a></br>
+        <strong>Número:</strong> 232323.101010/2023-15 </br>
+        <strong>Tribunal:</strong> TJ-SP </br>
+        <strong>Ativo:</strong> Sim </br>
+        <button type="button" class="btn btn-primary btn-sm">
+  Ver anexos
+        </button><i> </i>
+        <button type="button" class="btn btn-primary btn-sm">
+  Incluir anexo
+</button>
+        </br>
+        <strong>Atualizações:</strong></br>
+
+  <div class="card card-body">
+
+    <table class="table table-striped-columns">
+      <tbody>
+          <tr>
+             <td><strong>Em</strong> 01/10/2023 </td>
+             <td><strong>Mensagem</strong>: Processo Protocolado</td>
+             <td><strong>Explicação</strong>: Essa mensagem apenas indica que o processo foi criado e começou a tramitar.</td>
+          </tr>
+          <tr>
+             <td><strong>Em</strong> 02/10/2023 </td>
+             <td><strong>Mensagem</strong>: Para análise</td>
+             <td><strong>Explicação</strong>: -</td>
+          </tr>
+      </tbody>
+   </table>
+
+  </div>
+
+    </div>
+    <div class="col">
+    </div>
+  </div>
+    <div class="row">
+        </br>
+    </div>
+</div>
+
+{% include '_navOff.html' %}
+
+{% include '_tail.html' %}

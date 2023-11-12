@@ -19,4 +19,11 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< HEAD:advocacia_digital/advocacia_digital/urls.py
 ]
+=======
+    path("", include('triagem.urls')),
+    path("", include('prestador.urls')),
+    path("", include('cliente.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+>>>>>>> origin/Django-André:Django/advDig/advDig/urls.py

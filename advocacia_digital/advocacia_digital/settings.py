@@ -31,12 +31,24 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD:advocacia_digital/advocacia_digital/settings.py
+=======
+    'django.contrib.humanize',
+    # Externos
+    'crispy_forms',
+    "crispy_bootstrap5",
+    # Meus
+    'prestador',
+    'cliente',
+    'triagem',
+>>>>>>> origin/Django-André:Django/advDig/advDig/settings.py
 ]
 
 MIDDLEWARE = [
@@ -121,3 +133,22 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+<<<<<<< HEAD:advocacia_digital/advocacia_digital/settings.py
+=======
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+
+AUTH_USER_MODEL = 'triagem.Usuario'
+# Mensagens
+from django.contrib.messages import constants
+
+MESSAGE_TAGS = {
+    constants.ERROR: 'alert-danger',
+    constants.DEBUG: 'alert-info',
+    constants.INFO: 'alert-info',
+    constants.WARNING: 'alert-warning',
+    constants.SUCCESS: 'alert-success',
+}
+
+LOGIN_URL = "/login"
+>>>>>>> origin/Django-André:Django/advDig/advDig/settings.py

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Cliente</title>
+</head>
+<br>
+{% include '_msg.html' %}
+
+{% include 'equipe/_menuprincipal.html' with ativo=1 %}
+
+<div class="d-flex align-items-center text-white bg-dark rounded shadow-sm my-2 p-2">
+    <h4>Você precisa enviar documentos para um de seus processos</h4>
+    <a href=# class="btn btn-warning mx-2" role="button">Enviar agora</a>
+</div>
+
+<div class="d-flex my-2 align-items-center text-white bg-dark rounded shadow-sm">
+    <div class="d-flex-row">
+        <h3>Demandas</h3>
+    </div>
+    {% include "equipe/_demanda.html" with ativo=2 %}
+</div>
+
+<div class="container-fluid">
+ <div class="card">
+  <div class="card-header">
+    <h5> Rejeitar demanda #{{ demanda.id }}, por <a href="{% url 'e_cliente' demanda.usuario.id %}">{{demanda.usuario}}</a></h5>
+
+  </div>
+  <div class="card-body">
+      <form method="POST" class="my-class" action="{% url 'e_demandaAcolher' demanda.id 0 %}" enctype="multipart/form-data">
+          {% load crispy_forms_tags %}
+          {% csrf_token %}
+          {{ form|crispy }}
+          <button class="w-25 btn btn-lg btn-primary" type="submit">Enviar</button>
+      </form>
+  </div>
+     </div>
+
+</div>
+
+    <div class="row">
+        </br>
+    </div>
+</div>
+
+{% include '_navOn.html' %}
+
+{% include '_tail.html' %}
