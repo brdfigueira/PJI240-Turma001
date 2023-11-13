@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Cliente</title>
+</head>
+<br>
+{% include '_msg.html' %}
+
+{% include 'equipe/_menuprincipal.html' with ativo=4 %}
+
+{% include "equipe/_subG.html" with titulo='Solicitações' %}
+
+
+<div class="container-fluid">
+ <div class="card">
+  <div class="card-header">
+    <h5> Solicitação de documentos #{{ solicita.id }} para {{ solicita.cliente }} </a></h5>
+  </div>
+  <div class="card-body">
+      <h5 class="card-title">Status:</h5>
+      <p class="card-text">
+          {% if solicita.concluida %}
+            Concluída
+          {% elif solicita.enviada %}
+            Pendente
+          {% else %}
+            Em criação
+          {% endif %}
+      </p>
+    {% if solicita.demanda.all.exists %}
+    <h5 class="card-title">Demanda(s):</h5>
+    {% for demanda in solicita.demanda.all %}
+    <p class="card-text"><a href="{% url 'e_demanda' demanda.id %}">{{ demanda }}</a></p>
+    {% endfor %}
+    {% endif %}
+    {% if solicita.processo.all.exists %}
+    <h5 class="card-title">Processos(s):</h5>
+    {% for processo in solicita.processo.all %}
+    <p class="card-text"><a href="{% url 'e_processo' processo.id %}">{{ processo }}</a></p>
+    {% endfor %}
+    {% endif %}
+
+  </div>
+  <div class="card-header">
+    <h5> Documentos solicitados </a></h5>
+  </div>
+  <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Descrição</th>
+              <th scope="col">Status</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for anexo in solicita.anexo_set.all %}
+            <tr>
+              <td>{{ anexo.descricao }}</td>
+              <td>{% if anexo.validado %}
+                    Validado
+                  {% elif anexo.anexo %}
+                    Aguardando validação
+                  {% else %}
+                    Pendente
+                  {% endif %}
+              </td>
+              <td><a href="{% url 'e_anexo' anexo.pk 'ver' %}" role="button" class="btn btn-secondary btn-sm">Ver</a></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+  </div>
+  {% if not solicita.concluida and not solicita.enviada %}
+  <div class="card-header">
+      <form class="d-flex mt-3" method="POST" class="my-class" action="{% url 'e_solicita' solicita.pk %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="text" class="form-control" id="descrição" name="documento" placeholder="Descreva o documento que deve ser enviado">
+          <button class="btn btn-primary" type="submit">Adicionar à solicitação</button>
+       </form>
+  </div>
+  {% endif %}
+   <div class="card-header">
+    <a href="{% url 'e_solicitaProc' solicita.pk 'enviar' %}" role="button" class="btn btn-warning">Enviar</a>
+    <a href="{% url 'e_solicitaProc' solicita.pk 'cancelar' %}" role="button" class="btn btn-danger">Cancelar</a>
+    <a href="{% url 'e_solicitaProc' solicita.pk 'concluir' %}" role="button" class="btn btn-success">Concluir</a>
+  </div>
+
+</div>
+    <div class="row">
+        </br>
+    </div>
+    <div class="row">
+        </br>
+    </div>
+</div>
+
+{% include '_navOn.html' %}
+
+{% include '_tail.html' %}

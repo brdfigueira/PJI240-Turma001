@@ -1,0 +1,20 @@
+<div class="d-flex my-2 align-items-center text-white bg-dark rounded shadow-sm">
+    <div class="d-flex-row">
+        <h3>Minhas Demandas</h3>
+    </div>
+    <div class="p-1 flex-grow-1">
+      {% if ativo == 2 %}
+      <a href="{% url 'cliente' %}" class="btn btn-dark active mx-1" role="button">Ativas</a>
+      <a href="{% url 'demandaTodas' %}" class="btn btn-dark mx-1" role="button">Todas</a>
+      <a href="{% url 'demandaNova' %}" class="btn btn-warning mx-1" role="button">Nova</a>
+
+      {% elif ativo == 1 %}
+      <a href="{% url 'cliente' %}" class="btn btn-dark mx-1" role="button">Ativas</a>
+      <a href="{% url 'demandaTodas' %}" class="btn btn-dark active mx-1" role="button">Todas</a>
+      <a href="{% url 'demandaNova' %}" class="btn btn-warning mx-1" role="button">Nova</a>
+
+      {% endif %}
+
+
+    </div>
+</div>

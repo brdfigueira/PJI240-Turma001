@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Cliente</title>
+</head>
+<br>
+{% include '_msg.html' %}
+
+{% include 'equipe/_menuprincipal.html' with ativo=1 %}
+
+{% include "equipe/_demanda.html" with ativo=2 %}
+
+<div class="container-fluid">
+ <div class="card">
+  <div class="card-header">
+    <h5> Demanda #{{ demanda.id }}, por <a href="{% url 'e_cliente' demanda.usuario.id %}">{{demanda.usuario}}</a> (
+        {{ demanda.ativa|yesno:"Ativa,Inativa" }}
+        )
+        {% if not demanda.acolhida and demanda.ativa %}
+            <span class="badge bg-warning">Nova</span>
+        {% elif not demanda.acolhida and not demanda.ativa and demanda.negativa %}
+            <span class="badge bg-secondary">Rejeitada</span>
+        {% endif %}
+    </h5>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Detalhes:</h5>
+    <p class="card-text">{{ demanda.detalhes }}</p>
+    {% if demanda.solicitacao_set.all.exists %}
+        <a href="{% url 'e_solicitas' 'demanda' demanda.pk %}" role="button" class="btn btn-secondary btn-sm">Solicitações</a>
+    {% endif %}
+    {% if demanda.anexo_set.all.exists %}
+        <a href="{% url 'e_anexos' 'demanda' demanda.id %}" role="button" class="btn btn-secondary btn-sm">Documentos</a>
+    {% endif %}
+  </div>
+  {% if demanda.processo_set.all %}
+    <div class="card-header">
+      <h5 class="card-title">Processos</h5>
+    </div>
+    {% for proc in demanda.processo_set.all %}
+      <div class="card-body">
+          <p class="card-text"><a href="{% url 'e_processo' proc.id %}">{{ proc.numero }}</a></p>
+      </div>
+    {% endfor %}
+  {% endif %}
+    {% if demanda.negativa %}
+    <div class="card-header">
+      <h5 class="card-title">Justificativa para rejeição</h5>
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{ demanda.negativa.texto }}</p>
+    </div>
+    {% endif %}
+
+
+
+     <div class="card-header">
+         {% if not demanda.acolhida %}
+         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmeAcolhimento">
+              Acolher
+         </button>
+        <div class="modal fade" id="confirmeAcolhimento" tabindex="-1" aria-labelledby="confirmeAcolhimentoLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirmeAcolhimentoLabel">Confirmação</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Tem certeza que deseja acolher esta demanda?</br>
+                O cliente será notificado por e-mail.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                <a href="{% url 'e_demandaAcolher' demanda.id 1 %}" role="button" class="btn btn-success">Sim</a>
+              </div>
+            </div>
+          </div>
+        </div>
+         {% endif %}
+         {% if not demanda.negativa and not demanda.acolhida and demanda.ativa %}
+            <a href="{% url 'e_demandaAcolher' demanda.id 0 %}" role="button" class="btn btn-danger">Rejeitar</a>
+         {% endif %}
+         {% if demanda.ativa and demanda.acolhida %}
+            <a href="{% url 'e_processoNovo' demanda.id %}" role="button" class="btn btn-warning">Novo Processo</a>
+            <a href="{% url 'e_solicitaNova' 'demanda' demanda.id %}" role="button" class="btn btn-warning">Solicitar documentos</a>
+         {% endif %}
+     </div>
+
+ </div>
+
+    <div class="row">
+        </br>
+    </div>
+</div>
+
+{% include '_navOn.html' %}
+
+{% include '_tail.html' %}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+{% load static %}
+
+<head>
+    {% include '_head.html' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
+
+    <title>AdvDig - Anexos</title>
+</head>
+<br>
+{% include '_msg.html' %}
+
+{% include 'cliente/_menuprincipal.html' with ativo=0 %}
+{% include 'cliente/_pendencia.html' with pendencia=request.session.pendencia %}
+{% include "cliente/_subG.html" with titulo="Documentos" %}
+
+<div class="container-fluid">
+    <div class="row">
+    <div class="col">
+    </div>
+    <div class="col-8">
+       <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Descrição</th>
+              <th scope="col">Documento</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for anexo in lista %}
+            <tr>
+              <td><a href="{% url 'e_anexo' anexo.id 'ver' %}">#{{ anexo.id }}</a></td>
+              <td>{{ anexo.descricao }}</td>
+              <td>{% if anexo.anexo %}
+                    <a href="{{ anexo.anexo.url }}">Anexado</a>
+                  {% else %}
+                    Pendente
+                  {% endif %}
+              </td>
+              <td>{% if anexo.validado %}
+                    Validado
+                  {% elif anexo.anexo %}
+                    Aguardando validação
+                  {% else %}
+                    Pendente
+                  {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="col">
+    </div>
+  </div>
+    <div class="row">
+        </br>
+    </div>
+</div>
+
+{% include '_navOn.html' %}
+
+{% include '_tail.html' %}
